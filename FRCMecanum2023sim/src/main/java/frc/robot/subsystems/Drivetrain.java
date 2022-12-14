@@ -125,7 +125,7 @@ public class Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("Rear Right Velocity",rightRearMotorEncoder.getVelocity());  
   }
 
-  public void driveWithJoysticks(double throttle, double slide, double rotation, boolean useFOD, int joystickType) { 
+  public void driveWithJoysticks(double throttle, double slide, double rotation, boolean useFOD) { 
     if (useFOD) {
         drive.driveCartesian(throttle, slide, rotation, getGyroAngle());
       }
