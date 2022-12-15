@@ -4,11 +4,20 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+
+//subsystems
+import frc.robot.subsystems.Drivetrain;
+
+//commands
+import frc.robot.commands.Drive;
+import frc.robot.commands.Auto.DoNothing;
+//dashboard
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -18,14 +27,54 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  
+  //Joystick declare
+  private final XboxController  driverJoystick = new XboxController(Constants.Controllers.DRIVER_JOYSTICK);
+  private final XboxController operatorJoystick = new XboxController(Constants.Controllers.OPERATOR_JOYSTICK);
 
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  //Subsystems declare
+  private final Drivetrain driveTrain = new Drivetrain();
+
+
+  //Dashboard declare
+  //useFOD = SmartDashboard.getBoolean("Use FOD");
+
+
+  //Commands declare
+  private final Drive drive 
+    = new Drive(
+        driveTrain, 
+        () -> driverJoystick.getLeftY(),
+        () -> driverJoystick.getLeftX(),
+        () -> driverJoystick.getRightX(),
+        true);
+
+  private final DoNothing doNothing = new DoNothing();
+
+ 
+//Sendable chooser declare
+SendableChooser<Command> autoChooser = new SendableChooser<>();  //allows for autonomous selection
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
+
+    //set autonomous selector
+    autoChooser.setDefaultOption(
+      "Do Nothing", 
+      new DoNothing()
+      );
+
     configureButtonBindings();
+
+    // set default commands on subsystems
+    driveTrain.setDefaultCommand(drive);
+
+    //Initialize/calibrate gyro
+    driveTrain.resetGyro();
+    driveTrain.calibrateGyro();
+
   }
 
   /**
@@ -34,7 +83,47 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+
+  //Configure dashboard button for FOD
+
+
+    /*
+     * TODO: find values for dpad; create command (method?) to face 0, 90, 180, 270
+     */
+
+    //JoystickButton driverLeft = new JoystickButton(driverJoystick, Constants.DRIVER_LEFT);
+    //JoystickButton driverRight = new JoystickButton(driverJoystick, Constants.DRIVER_RIGHT);
+    //JoystickButton driverUp = new JoystickButton(driverJoystick, Constants.DRIVER_UP);
+    //JoystickButton driverDown = new JoystickButton(driverJoystick, Constants.DRIVER_DOWN);
+    //JoystickButton driverShoulderTopLeft = new JoystickButton(driverJoystick, Constants.DRIVER_SHOULDER_TOP_LEFT);
+    //JoystickButton driverShoulderTopRight = new JoystickButton(driverJoystick, Constants.DRIVER_SHOULDER_TOP_RIGHT);
+    //JoystickButton driverShoulderBottomLeft = new JoystickButton(driverJoystick, Constants.DRIVER_SHOULDER_BOTTOM_LEFT);
+    //JoystickButton driverShoulderBottomRight = new JoystickButton(driverJoystick, Constants.DRIVER_SHOULDER_BOTTOM_RIGHT);
+    //JoystickButton driverLeftJoystick = new JoystickButton(driverJoystick, Constants.DRIVER_LEFT_JOYSTICK);
+    //JoystickButton driverRightJoystick = new JoystickButton(driverJoystick, Constants.DRIVER_RIGHT_JOYSTICK);
+
+    //JoystickButton operatorLeft = new JoystickButton(operatorJoystick, Constants.OPERATOR_LEFT);
+    //JoystickButton operatorRight = new JoystickButton(operatorJoystick, Constants.OPERATOR_RIGHT);
+    //JoystickButton operatorUp = new JoystickButton(operatorJoystick, Constants.OPERATOR_UP);
+    //JoystickButton operatorDown = new JoystickButton(operatorJoystick, Constants.OPERATOR_DOWN);
+    //JoystickButton operatorShoulderTopLeft = new JoystickButton(operatorJoystick, Constants.OPERATOR_SHOULDER_TOP_LEFT);
+    //JoystickButton operatorShoulderTopRight = new JoystickButton(operatorJoystick, Constants.OPERATOR_SHOULDER_TOP_RIGHT);
+    //JoystickButton operatorShoulderBottomLeft = new JoystickButton(operatorJoystick, Constants.OPERATOR_SHOULDER_BOTTOM_LEFT);
+    //JoystickButton operatorShoulderBottomRight = new JoystickButton(operatorJoystick, Constants.OPERATOR_SHOULDER_BOTTOM_RIGHT);
+    //JoystickButton operatorMidLeft = new JoystickButton(operatorJoystick, Constants.OPERATOR_MID_LEFT);
+    //JoystickButton operatorLeftJoystick = new JoystickButton(operatorJoystick, Constants.OPERATOR_LEFT_JOYSTICK);
+    //JoystickButton operatorRightJoystick = new JoystickButton(operatorJoystick, Constants.OPERATOR_RIGHT_JOYSTICK);
+  
+      //button command links
+
+      /*  example
+      operatorUp.whenPressed(new ShootHigh(shooter)); //set shooter motor to shoot to high goal
+      */
+
+
+
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -43,6 +132,15 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    //return m_autoCommand;
+    return autoChooser.getSelected();
   }
+
+
+  private void shuffleboardSetup()
+  {
+
+
+  }
+  
 }
