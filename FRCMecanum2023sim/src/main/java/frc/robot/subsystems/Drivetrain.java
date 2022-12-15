@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 
 
 public class Drivetrain extends SubsystemBase {
@@ -54,6 +55,9 @@ public class Drivetrain extends SubsystemBase {
   RelativeEncoder rightFrontMotorEncoder;
   RelativeEncoder leftRearMotorEncoder;
   RelativeEncoder rightRearMotorEncoder;
+
+  //field
+  Field2d field;
   
     /** Creates a new Drivetrain. */
     public Drivetrain() {
@@ -108,12 +112,15 @@ public class Drivetrain extends SubsystemBase {
       rightFrontMotorEncoder.setVelocityConversionFactor(Constants.ChassisConstants.WHEEL_CIRCUM/(10.71*60));
       rightRearMotorEncoder.setVelocityConversionFactor(Constants.ChassisConstants.WHEEL_CIRCUM/(10.71*60));
  
+      //Field
+      Field2d field = new Field2d();
     }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
   // driveOdometry.update(getGyroRotation(), getWheelPositions()); 
+    field.setRobotPose(new Pose2d(0, 0, new Rotation2d(0)));
 
     SmartDashboard.putNumber("Front Left Position",leftFrontMotorEncoder.getPosition());
     SmartDashboard.putNumber("Front Left Velocity",leftFrontMotorEncoder.getVelocity());

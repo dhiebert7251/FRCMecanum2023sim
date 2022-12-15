@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 //subsystems
@@ -41,14 +42,14 @@ public class RobotContainer {
 
 
   //Commands declare
-  private final Drive drive 
+  private final Drive drive
     = new Drive(
         driveTrain, 
         () -> driverJoystick.getLeftY(),
         () -> driverJoystick.getLeftX(),
         () -> driverJoystick.getRightX(),
         true);
-
+  
   private final DoNothing doNothing = new DoNothing();
 
  
@@ -96,7 +97,7 @@ SendableChooser<Command> autoChooser = new SendableChooser<>();  //allows for au
     //JoystickButton driverRight = new JoystickButton(driverJoystick, Constants.DRIVER_RIGHT);
     //JoystickButton driverUp = new JoystickButton(driverJoystick, Constants.DRIVER_UP);
     //JoystickButton driverDown = new JoystickButton(driverJoystick, Constants.DRIVER_DOWN);
-    //JoystickButton driverShoulderTopLeft = new JoystickButton(driverJoystick, Constants.DRIVER_SHOULDER_TOP_LEFT);
+    JoystickButton driverShoulderTopLeft = new JoystickButton(driverJoystick, Constants.Controllers.DRIVER_SHOULDER_TOP_LEFT);
     //JoystickButton driverShoulderTopRight = new JoystickButton(driverJoystick, Constants.DRIVER_SHOULDER_TOP_RIGHT);
     //JoystickButton driverShoulderBottomLeft = new JoystickButton(driverJoystick, Constants.DRIVER_SHOULDER_BOTTOM_LEFT);
     //JoystickButton driverShoulderBottomRight = new JoystickButton(driverJoystick, Constants.DRIVER_SHOULDER_BOTTOM_RIGHT);
@@ -116,9 +117,10 @@ SendableChooser<Command> autoChooser = new SendableChooser<>();  //allows for au
     //JoystickButton operatorRightJoystick = new JoystickButton(operatorJoystick, Constants.OPERATOR_RIGHT_JOYSTICK);
   
       //button command links
-
+      driverShoulderTopLeft.whenPressed(new DoNothing());
       /*  example
       operatorUp.whenPressed(new ShootHigh(shooter)); //set shooter motor to shoot to high goal
+      
       */
 
 
