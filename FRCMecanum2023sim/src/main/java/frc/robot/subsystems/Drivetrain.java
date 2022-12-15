@@ -13,6 +13,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxRelativeEncoder.Type;
 
+
 //Geometry/kinematics
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -42,6 +43,7 @@ public class Drivetrain extends SubsystemBase {
   CANSparkMax leftRearMotor;
   CANSparkMax rightRearMotor;
 
+
   //drivetrain type
   MecanumDrive drive;
 
@@ -66,6 +68,8 @@ public class Drivetrain extends SubsystemBase {
       leftFrontMotor = new CANSparkMax(Constants.DriveConstants.LEFT_FRONT_MOTOR,MotorType.kBrushless);
       leftFrontMotor.setInverted(Constants.DriveConstants.LEFT_FRONT_INVERTED);
       leftFrontMotor.getEncoder(Type.kHallSensor,Constants.DriveConstants.kEncoderCPR);
+
+
       
       leftRearMotor = new CANSparkMax(Constants.DriveConstants.LEFT_REAR_MOTOR, MotorType.kBrushless);
       leftRearMotor.setInverted(Constants.DriveConstants.LEFT_REAR_INVERTED);
@@ -99,6 +103,8 @@ public class Drivetrain extends SubsystemBase {
       leftRearMotorEncoder = leftRearMotor.getEncoder(Type.kHallSensor,Constants.DriveConstants.kEncoderCPR);
       rightFrontMotorEncoder = rightFrontMotor.getEncoder(Type.kHallSensor,Constants.DriveConstants.kEncoderCPR);
       rightRearMotorEncoder = rightRearMotor.getEncoder(Type.kHallSensor,Constants.DriveConstants.kEncoderCPR);
+
+
 
       /*
       TODO: why 10.71?  where is this conversion factor from?
@@ -234,7 +240,7 @@ public class Drivetrain extends SubsystemBase {
     
 
       /** Reset the gyroscope to 0 */
-    /*  
+    
     public void resetGyro() {
      if (getVelocityLeft() != 0 || getVelocityRight() != 0) {
       //System.out.println("WARNING: Do not try to reset the gyroscope while the robot is moving");
@@ -250,7 +256,7 @@ public class Drivetrain extends SubsystemBase {
       }
       gyro.calibrate();
     }
-    */
+    
     
     public void stop() {
       drive.stopMotor();
@@ -265,6 +271,7 @@ public class Drivetrain extends SubsystemBase {
     /*
      * TODO: need to see how this all works
      */
+    /*
     private void configureDriveShuffleboard() {
       //set up shuffleboard tab to monitor/control drive components
       ShuffleboardTab shuffleDriveTab = Shuffleboard.getTab("Drive");
@@ -300,5 +307,5 @@ public class Drivetrain extends SubsystemBase {
 
       
     }
-
+*/
 }
