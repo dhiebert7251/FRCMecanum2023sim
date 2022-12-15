@@ -72,10 +72,11 @@ SendableChooser<Command> autoChooser = new SendableChooser<>();  //allows for au
     // set default commands on subsystems
     driveTrain.setDefaultCommand(drive);
 
+    /*
     //Initialize/calibrate gyro
     driveTrain.resetGyro();
     driveTrain.calibrateGyro();
-
+    */
   }
 
   /**

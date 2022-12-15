@@ -234,9 +234,10 @@ public class Drivetrain extends SubsystemBase {
     
 
       /** Reset the gyroscope to 0 */
+    /*  
     public void resetGyro() {
      if (getVelocityLeft() != 0 || getVelocityRight() != 0) {
-      System.out.println("WARNING: Do not try to reset the gyroscope while the robot is moving");
+      //System.out.println("WARNING: Do not try to reset the gyroscope while the robot is moving");
       return;
     }
       gyro.reset();
@@ -244,12 +245,12 @@ public class Drivetrain extends SubsystemBase {
 
     public void calibrateGyro(){
       if (getVelocityLeft() != 0 || getVelocityRight() != 0) {
-        System.out.println("WARNING: Do not try to reset the gyroscope while the robot is moving");
+        //System.out.println("WARNING: Do not try to reset the gyroscope while the robot is moving");
         return;
       }
       gyro.calibrate();
     }
-
+    */
     
     public void stop() {
       drive.stopMotor();
