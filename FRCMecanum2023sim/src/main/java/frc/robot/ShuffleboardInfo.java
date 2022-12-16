@@ -31,7 +31,7 @@ public class ShuffleboardInfo {
     private final NetworkTableEntry useFOD; /*, m_IntakeOn, m_Shooting, m_ClimberUp, m_isTargetValid, m_bottomBeam, m_2ndBeam, m_3rdBeam, m_topBeam; */
 
     // Auto Tab Entries
-    private final NetworkTableEntry autoMode;
+    //private final NetworkTableEntry autoMode;
 
     // Temporary Tuning values
     //private final NetworkTableEntry m_kpSteer, m_kpDrive;
@@ -60,8 +60,6 @@ public class ShuffleboardInfo {
             .withSize(1, 1)
             .withWidget(BuiltInWidgets.kBooleanBox)
             .getEntry();
-
-        autoMode = m_auto_tab.add("Autonomous Mode", )
         
         /*
         m_IntakeOn = m_driver_tab.add("Intake On", false)
@@ -82,11 +80,10 @@ public class ShuffleboardInfo {
         return instance;
     }
 
-    /*
-    public NetworkTableEntry getIntakeOnEntry() {
-        return m_IntakeOn;
+    //Network Table entries
+    public NetworkTableEntry getDriveMode() {
+        return useFOD;
     }
-    */
 
     /* PID tuning entries
     public NetworkTableEntry getKPsteerEntry() {
