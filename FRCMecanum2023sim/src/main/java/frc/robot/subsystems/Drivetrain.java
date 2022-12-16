@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.ShuffleboardInfo;
 
 //REV libraries
 import com.revrobotics.CANSparkMax;
@@ -19,7 +20,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
-
+import edu.wpi.first.networktables.NetworkTableEntry;
 //Drive
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 
@@ -60,16 +61,21 @@ public class Drivetrain extends SubsystemBase {
 
   //field
   Field2d field;
+
+  //data from shuffleboard
+    //private final NetworkTableEntry m_low_gear_entry;
+    private final NetworkTableEntry useFOD;
   
     /** Creates a new Drivetrain. */
     public Drivetrain() {
+      //Get shuffleboard data
+      //m_low_gear_entry = ShuffleboardInfo.getInstance().getDriverLowGearEntry();
+      useFOD = ShuffleboardInfo.getInstance().getDriveMode();
 
       //Motors
       leftFrontMotor = new CANSparkMax(Constants.DriveConstants.LEFT_FRONT_MOTOR,MotorType.kBrushless);
       leftFrontMotor.setInverted(Constants.DriveConstants.LEFT_FRONT_INVERTED);
       leftFrontMotor.getEncoder(Type.kHallSensor,Constants.DriveConstants.kEncoderCPR);
-
-
       
       leftRearMotor = new CANSparkMax(Constants.DriveConstants.LEFT_REAR_MOTOR, MotorType.kBrushless);
       leftRearMotor.setInverted(Constants.DriveConstants.LEFT_REAR_INVERTED);

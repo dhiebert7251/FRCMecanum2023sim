@@ -6,8 +6,10 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.ShuffleboardInfo;
 
 public class Drive extends CommandBase {
   private final Drivetrain driveTrain;
@@ -15,6 +17,7 @@ public class Drive extends CommandBase {
   private DoubleSupplier slide;
   private DoubleSupplier rotation;
   private boolean useFOD;
+
 
   public Drive(Drivetrain driveTrain, DoubleSupplier throttle, 
       DoubleSupplier slide, DoubleSupplier rotation, 

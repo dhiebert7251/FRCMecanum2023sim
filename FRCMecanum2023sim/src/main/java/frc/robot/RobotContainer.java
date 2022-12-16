@@ -7,13 +7,16 @@ package frc.robot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 //subsystems
 import frc.robot.subsystems.Drivetrain;
 
 //commands
 import frc.robot.commands.Drive;
+import frc.robot.commands.Auto.Auto2;
 import frc.robot.commands.Auto.DoNothing;
+import frc.robot.calibration.PIDTuningCommand;
+
 //dashboard
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -43,7 +46,7 @@ public class RobotContainer {
   //Dashboard declare
   //useFOD = SmartDashboard.getBoolean("Use FOD");
   // Shuffleboard Info is the container for all the shuffleboard pieces we want to see
-  private Shuffleboard m_sbi_instance;
+  private ShuffleboardInfo m_sbi_instance;
 
 
   //Commands declare
@@ -56,10 +59,13 @@ public class RobotContainer {
         true);
   
   private final DoNothing doNothing = new DoNothing();
+  private final Auto2 auto2 = new Auto2();
+
+  private final PIDTuningCommand pidTuningCommand = new PIDTuningCommand(driveTrain);
 
  
 //Sendable chooser declare
-SendableChooser<Command> autoChooser = new SendableChooser<>();  //allows for autonomous selection
+SendableChooser<Command> autoChooser; //= new SendableChooser<>();  //allows for autonomous selection
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -67,12 +73,24 @@ SendableChooser<Command> autoChooser = new SendableChooser<>();  //allows for au
     // Configure the button bindings
 
     //set autonomous selector
+    autoChooser = new SendableChooser<Command>();
+
     autoChooser.setDefaultOption(
       "Do Nothing", 
       new DoNothing()
       );
+    
+    //  Add additional auto options
+    autoChooser.addOption("Auto 2", new Auto2());
 
-    configureButtonBindings();
+  
+
+    /*  Use shuffleboard for PID tuning
+    Shuffleboard.getTab("PID Tuning").add(new ShooterTuningCommand(m_shooter,m_intake)).withWidget(BuiltInWidgets.kCommand);
+    */
+
+
+ 
 
     // set default commands on subsystems
     driveTrain.setDefaultCommand(drive);
@@ -81,6 +99,9 @@ SendableChooser<Command> autoChooser = new SendableChooser<>();  //allows for au
     //Initialize/calibrate gyro
     driveTrain.resetGyro();
     driveTrain.calibrateGyro();
+
+    //Set up button bindings after subsystems/commands have been declared
+    configureButtonBindings();
 
     //Setup Shuffleboard
     shuffleboardSetup();
@@ -97,11 +118,6 @@ SendableChooser<Command> autoChooser = new SendableChooser<>();  //allows for au
 
   //Configure dashboard button for FOD
 
-
-    /*
-     * TODO: find values for dpad; create command (method?) to face 0, 90, 180, 270
-     */
-
     //JoystickButton driverLeft = new JoystickButton(driverJoystick, Constants.DRIVER_LEFT);
     //JoystickButton driverRight = new JoystickButton(driverJoystick, Constants.DRIVER_RIGHT);
     //JoystickButton driverUp = new JoystickButton(driverJoystick, Constants.DRIVER_UP);
@@ -112,6 +128,11 @@ SendableChooser<Command> autoChooser = new SendableChooser<>();  //allows for au
     //JoystickButton driverShoulderBottomRight = new JoystickButton(driverJoystick, Constants.DRIVER_SHOULDER_BOTTOM_RIGHT);
     //JoystickButton driverLeftJoystick = new JoystickButton(driverJoystick, Constants.DRIVER_LEFT_JOYSTICK);
     //JoystickButton driverRightJoystick = new JoystickButton(driverJoystick, Constants.DRIVER_RIGHT_JOYSTICK);
+    //POVButton driverPOVTop = new POVButton(driverJoystick, 0);
+    //POVButton driverPOVRight = new POVButton(driverJoystick, 90);
+    //POVButton driverPOVBottom = new POVButton(driverJoystick, 180);
+    //POVButton driverPOVLeft = new POVButton(driverJoystick, 270);
+
 
     //JoystickButton operatorLeft = new JoystickButton(operatorJoystick, Constants.OPERATOR_LEFT);
     //JoystickButton operatorRight = new JoystickButton(operatorJoystick, Constants.OPERATOR_RIGHT);
@@ -151,19 +172,33 @@ SendableChooser<Command> autoChooser = new SendableChooser<>();  //allows for au
     private void shuffleboardSetup()
     {
       // Setup methods for each subset of Shuffleboard needed setup
-      //m_sbi_instance = ShuffleboardInfo.getInstance();
+      m_sbi_instance = ShuffleboardInfo.getInstance();
       
       // Setup Autonomous
-      m_sbi_instance.addAutoChooser(m_auto_chooser);
+      m_sbi_instance.addAutoChooser(autoChooser);
       
       // setupClimberShuffleBoard(); call other shuffleboard setups
       setupAutonomousShuffleboard();
+      setupPidTuningCommandShuffleboard();
 
     }
 
     @SuppressWarnings("unused")
     private void setupAutonomousShuffleboard(){
       SmartDashboard.putData("Autonomous", new DoNothing());
+      SmartDashboard.putData("Autonomous", new Auto2());
+
+      /* should this be..
+      SmartDashboard.putData("Do Nothing", new DoNothing());
+      SmartDashboard.putData("Auto 2", new Auto2());
+
+      */
+
+      /* or..
+      SmartDashboard.getTab("Autonomous").add("Do Nothing", newDoNothing());
+      SmartDashboard.getTab("Autonomous").add("Auto 2", new Auto2());
+
+      */
       
     }
 
@@ -171,15 +206,11 @@ SendableChooser<Command> autoChooser = new SendableChooser<>();  //allows for au
     private void setupPidTuningCommandShuffleboard(){
       // First, assign a local variable the Tab that we are going to use
       // for pid tuning in Shuffleboard
-      Shuffleboard.getTab("PID Tuning").add(new PIDTuningCommand());
+      Shuffleboard.getTab("PID Tuning").add(new PIDTuningCommand(driveTrain));
 
     }
 
-    
-  @SuppressWarnings("unused")
-  private void setUpTalonSpeedCommand(){
-    Shuffleboard.getTab("Talon Tuning").add(new EditTalonSpeeds(m_drive_train));
-  }
+  /*  Sample for mechanism
 
   private void setupClimberShuffleBoard(){
     Shuffleboard.getTab("Climber").add("up",new ClimberUp(m_climber));
@@ -189,13 +220,15 @@ SendableChooser<Command> autoChooser = new SendableChooser<>();  //allows for au
     Shuffleboard.getTab("Climber").add("RetractSolnoid",new RetractClimberSolenoid(m_climber));
   }
   
+  */
+
   @SuppressWarnings("unused")
   private void setupDriveMMShuffleboard(){
     // First, assign a local variable the Tab that we are going to use
     // for pid tuning in Shuffleboard
     
     //Shuffleboard.getTab("Drive MM").add(new DriveMM(m_drive_train, 100)).withPosition(0, 0);
-    // Shuffleboard.getTab("Drive MM").add(new DriveMM(m_drive_train, -100)).withPosition(2, 0);
+    //Shuffleboard.getTab("Drive MM").add(new DriveMM(m_drive_train, -100)).withPosition(2, 0);
     //SmartDashboard.putData("Drive 100", new DriveMM(m_drive_train, 100));
     //SmartDashboard.putData("Drive -100", new DriveMM(m_drive_train, -100));
   }
