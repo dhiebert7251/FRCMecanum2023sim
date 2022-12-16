@@ -8,19 +8,19 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+
 //subsystems
 import frc.robot.subsystems.Drivetrain;
 
 //commands
 import frc.robot.commands.Drive;
+
 import frc.robot.commands.Auto.Auto2;
 import frc.robot.commands.Auto.DoNothing;
 import frc.robot.calibration.PIDTuningCommand;
 
 //dashboard
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
@@ -58,10 +58,10 @@ public class RobotContainer {
         () -> driverJoystick.getRightX(),
         true);
   
-  private final DoNothing doNothing = new DoNothing();
-  private final Auto2 auto2 = new Auto2();
+  //private final DoNothing doNothing = new DoNothing();
+  //private final Auto2 auto2 = new Auto2();
 
-  private final PIDTuningCommand pidTuningCommand = new PIDTuningCommand(driveTrain);
+  //private final PIDTuningCommand pidTuningCommand = new PIDTuningCommand(driveTrain);
 
  
 //Sendable chooser declare
@@ -148,6 +148,8 @@ SendableChooser<Command> autoChooser; //= new SendableChooser<>();  //allows for
   
       //button command links
       driverShoulderTopLeft.whenPressed(new DoNothing());
+      //driverShoulderTopLeft.whenPressed(doNothing);
+
       /*  example
       operatorUp.whenPressed(new ShootHigh(shooter)); //set shooter motor to shoot to high goal
       
