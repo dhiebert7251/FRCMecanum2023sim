@@ -64,75 +64,79 @@ public class Drivetrain extends SubsystemBase {
 
   //data from shuffleboard
     //private final NetworkTableEntry m_low_gear_entry;
-    private final NetworkTableEntry useFOD;
+  private final NetworkTableEntry useFOD;
   
-    /** Creates a new Drivetrain. */
-    public Drivetrain() {
+  /** Creates a new Drivetrain. */
+  public Drivetrain() {
       //Get shuffleboard data
       //m_low_gear_entry = ShuffleboardInfo.getInstance().getDriverLowGearEntry();
-      useFOD = ShuffleboardInfo.getInstance().getDriveMode();
+      //useFOD = ShuffleboardInfo.getInstance().getDriveMode();
 
-      //Motors
-      leftFrontMotor = new CANSparkMax(Constants.DriveConstants.LEFT_FRONT_MOTOR,MotorType.kBrushless);
-      leftFrontMotor.setInverted(Constants.DriveConstants.LEFT_FRONT_INVERTED);
-      leftFrontMotor.getEncoder(Type.kHallSensor,Constants.DriveConstants.kEncoderCPR);
+    //Motors
+    leftFrontMotor = new CANSparkMax(Constants.DriveConstants.LEFT_FRONT_MOTOR,MotorType.kBrushless);
+    leftFrontMotor.setInverted(Constants.DriveConstants.LEFT_FRONT_INVERTED);
+    leftFrontMotor.getEncoder(Type.kHallSensor,Constants.DriveConstants.kEncoderCPR);
       
-      leftRearMotor = new CANSparkMax(Constants.DriveConstants.LEFT_REAR_MOTOR, MotorType.kBrushless);
-      leftRearMotor.setInverted(Constants.DriveConstants.LEFT_REAR_INVERTED);
-      leftRearMotor.getEncoder(Type.kHallSensor,Constants.DriveConstants.kEncoderCPR);
+    leftRearMotor = new CANSparkMax(Constants.DriveConstants.LEFT_REAR_MOTOR, MotorType.kBrushless);
+    leftRearMotor.setInverted(Constants.DriveConstants.LEFT_REAR_INVERTED);
+    leftRearMotor.getEncoder(Type.kHallSensor,Constants.DriveConstants.kEncoderCPR);
       
-      rightFrontMotor = new CANSparkMax(Constants.DriveConstants.RIGHT_FRONT_MOTOR, MotorType.kBrushless);
-      rightFrontMotor.setInverted(Constants.DriveConstants.RIGHT_FRONT_INVERTED);
-      rightFrontMotor.getEncoder(Type.kHallSensor,Constants.DriveConstants.kEncoderCPR);
+    rightFrontMotor = new CANSparkMax(Constants.DriveConstants.RIGHT_FRONT_MOTOR, MotorType.kBrushless);
+    rightFrontMotor.setInverted(Constants.DriveConstants.RIGHT_FRONT_INVERTED);
+    rightFrontMotor.getEncoder(Type.kHallSensor,Constants.DriveConstants.kEncoderCPR);
      
-      rightRearMotor = new CANSparkMax(Constants.DriveConstants.RIGHT_REAR_MOTOR, MotorType.kBrushless);
-      rightRearMotor.setInverted(Constants.DriveConstants.RIGHT_REAR_INVERTED);
-      rightRearMotor.getEncoder(Type.kHallSensor,Constants.DriveConstants.kEncoderCPR);
+    rightRearMotor = new CANSparkMax(Constants.DriveConstants.RIGHT_REAR_MOTOR, MotorType.kBrushless);
+    rightRearMotor.setInverted(Constants.DriveConstants.RIGHT_REAR_INVERTED);
+    rightRearMotor.getEncoder(Type.kHallSensor,Constants.DriveConstants.kEncoderCPR);
     
-      //mecanum drivetrain
-      drive = new MecanumDrive(leftFrontMotor, leftRearMotor, rightFrontMotor, rightRearMotor);
-      setMaxSpeed();
+    //mecanum drivetrain
+    drive = new MecanumDrive(leftFrontMotor, leftRearMotor, rightFrontMotor, rightRearMotor);
+    setMaxSpeed();
       
-      //Sensors
+    //Sensors
 
-      //Gyro
-      ADXRS450_Gyro gyro = new ADXRS450_Gyro();
-      gyro.reset();
-      Shuffleboard.getTab("Telemetry").add(gyro);
+    //Gyro
+    ADXRS450_Gyro gyro = new ADXRS450_Gyro();
+    gyro.reset();
+    Shuffleboard.getTab("Telemetry").add(gyro);
 
-      //Odometry
+    //Odometry
       
-      //driveOdometry = new MecanumDriveOdometry(Constants.DriveConstants.KINEMATICS, getGyroRotation(), getWheelPositions());
+    //driveOdometry = new MecanumDriveOdometry(Constants.DriveConstants.KINEMATICS, getGyroRotation(), getWheelPositions());
 
-      //Drive motor encoders
-      leftFrontMotorEncoder = leftFrontMotor.getEncoder(Type.kHallSensor,Constants.DriveConstants.kEncoderCPR);
-      leftRearMotorEncoder = leftRearMotor.getEncoder(Type.kHallSensor,Constants.DriveConstants.kEncoderCPR);
-      rightFrontMotorEncoder = rightFrontMotor.getEncoder(Type.kHallSensor,Constants.DriveConstants.kEncoderCPR);
-      rightRearMotorEncoder = rightRearMotor.getEncoder(Type.kHallSensor,Constants.DriveConstants.kEncoderCPR);
+    //Drive motor encoders
+    leftFrontMotorEncoder = leftFrontMotor.getEncoder(Type.kHallSensor,Constants.DriveConstants.kEncoderCPR);
+    leftRearMotorEncoder = leftRearMotor.getEncoder(Type.kHallSensor,Constants.DriveConstants.kEncoderCPR);
+    rightFrontMotorEncoder = rightFrontMotor.getEncoder(Type.kHallSensor,Constants.DriveConstants.kEncoderCPR);
+    rightRearMotorEncoder = rightRearMotor.getEncoder(Type.kHallSensor,Constants.DriveConstants.kEncoderCPR);
 
 
 
       /*
       TODO: why 10.71?  where is this conversion factor from?
        */
-      leftFrontMotorEncoder.setPositionConversionFactor(Constants.ChassisConstants.WHEEL_CIRCUM/10.71);
-      leftRearMotorEncoder.setPositionConversionFactor(Constants.ChassisConstants.WHEEL_CIRCUM/10.71);
-      rightFrontMotorEncoder.setPositionConversionFactor(Constants.ChassisConstants.WHEEL_CIRCUM/10.71);
-      rightRearMotorEncoder.setPositionConversionFactor(Constants.ChassisConstants.WHEEL_CIRCUM/10.71);
-      leftFrontMotorEncoder.setVelocityConversionFactor(Constants.ChassisConstants.WHEEL_CIRCUM/(10.71*60));
-      leftRearMotorEncoder.setVelocityConversionFactor(Constants.ChassisConstants.WHEEL_CIRCUM/(10.71*60));
-      rightFrontMotorEncoder.setVelocityConversionFactor(Constants.ChassisConstants.WHEEL_CIRCUM/(10.71*60));
-      rightRearMotorEncoder.setVelocityConversionFactor(Constants.ChassisConstants.WHEEL_CIRCUM/(10.71*60));
+    leftFrontMotorEncoder.setPositionConversionFactor(Constants.ChassisConstants.WHEEL_CIRCUM/10.71);
+    leftRearMotorEncoder.setPositionConversionFactor(Constants.ChassisConstants.WHEEL_CIRCUM/10.71);
+    rightFrontMotorEncoder.setPositionConversionFactor(Constants.ChassisConstants.WHEEL_CIRCUM/10.71);
+    rightRearMotorEncoder.setPositionConversionFactor(Constants.ChassisConstants.WHEEL_CIRCUM/10.71);
+    leftFrontMotorEncoder.setVelocityConversionFactor(Constants.ChassisConstants.WHEEL_CIRCUM/(10.71*60));
+    leftRearMotorEncoder.setVelocityConversionFactor(Constants.ChassisConstants.WHEEL_CIRCUM/(10.71*60));
+    rightFrontMotorEncoder.setVelocityConversionFactor(Constants.ChassisConstants.WHEEL_CIRCUM/(10.71*60));
+    rightRearMotorEncoder.setVelocityConversionFactor(Constants.ChassisConstants.WHEEL_CIRCUM/(10.71*60));
  
-      //Field
-      Field2d field = new Field2d();
-    }
+    //Field
+    Field2d field = new Field2d();
+
+    useFOD.forceSetBoolean(getDriveMode());
+  }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
   // driveOdometry.update(getGyroRotation(), getWheelPositions()); 
     field.setRobotPose(new Pose2d(0, 0, new Rotation2d(0)));
+
+
 
     SmartDashboard.putNumber("Front Left Position",leftFrontMotorEncoder.getPosition());
     SmartDashboard.putNumber("Front Left Velocity",leftFrontMotorEncoder.getVelocity());
@@ -144,7 +148,9 @@ public class Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("Rear Right Velocity",rightRearMotorEncoder.getVelocity());  
   }
 
-  public void driveWithJoysticks(double throttle, double slide, double rotation, boolean useFOD) { 
+  //public void driveWithJoysticks(double throttle, double slide, double rotation, boolean useFOD) { 
+  public void driveWithJoysticks(double throttle, double slide, double rotation) {
+    useFOD = ShuffleboardInfo.getInstance().getDriveMode();
     if (useFOD) {
         drive.driveCartesian(throttle, slide, rotation, getGyroAngle());
       }

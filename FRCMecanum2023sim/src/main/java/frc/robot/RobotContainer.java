@@ -54,8 +54,7 @@ public class RobotContainer {
         driveTrain, 
         () -> driverJoystick.getLeftY(),
         () -> driverJoystick.getLeftX(),
-        () -> driverJoystick.getRightX(),
-        true);
+        () -> driverJoystick.getRightX());
   
   //private final DoNothing doNothing = new DoNothing();
   //private final Auto2 auto2 = new Auto2();
@@ -158,7 +157,7 @@ SendableChooser<Command> autoChooser; //= new SendableChooser<>();  //allows for
 
   }
 
-  /**
+    /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
@@ -170,46 +169,45 @@ SendableChooser<Command> autoChooser; //= new SendableChooser<>();  //allows for
   }
 
 
-    private void shuffleboardSetup()
-    {
-      // Setup methods for each subset of Shuffleboard needed setup
-      m_sbi_instance = ShuffleboardInfo.getInstance();
+  private void shuffleboardSetup()
+  {
+    // Setup methods for each subset of Shuffleboard needed setup
+    m_sbi_instance = ShuffleboardInfo.getInstance();
       
-      // Setup Autonomous
-      m_sbi_instance.addAutoChooser(autoChooser);
+    // Setup Autonomous
+    m_sbi_instance.addAutoChooser(autoChooser);
       
-      // setupClimberShuffleBoard(); call other shuffleboard setups
-      setupAutonomousShuffleboard();
-      setupPidTuningCommandShuffleboard();
+    // setupClimberShuffleBoard(); call other shuffleboard setups
+    setupAutonomousShuffleboard();
+    setupPidTuningCommandShuffleboard();
 
-    }
+  }
 
-    @SuppressWarnings("unused")
-    private void setupAutonomousShuffleboard(){
-      SmartDashboard.putData("Autonomous", new DoNothing());
-      SmartDashboard.putData("Autonomous", new Auto2());
+  @SuppressWarnings("unused")
+  private void setupAutonomousShuffleboard(){
+    SmartDashboard.putData("Autonomous", new DoNothing());
+    SmartDashboard.putData("Autonomous", new Auto2());
 
-      /* should this be..
-      SmartDashboard.putData("Do Nothing", new DoNothing());
-      SmartDashboard.putData("Auto 2", new Auto2());
+    /* should this be..
+    SmartDashboard.putData("Do Nothing", new DoNothing());
+    SmartDashboard.putData("Auto 2", new Auto2());
+    */
 
-      */
+    /* or..
+    SmartDashboard.getTab("Autonomous").add("Do Nothing", newDoNothing());
+    SmartDashboard.getTab("Autonomous").add("Auto 2", new Auto2());
 
-      /* or..
-      SmartDashboard.getTab("Autonomous").add("Do Nothing", newDoNothing());
-      SmartDashboard.getTab("Autonomous").add("Auto 2", new Auto2());
-
-      */
+    */
       
-    }
+  }
 
-    @SuppressWarnings("unused")
-    private void setupPidTuningCommandShuffleboard(){
-      // First, assign a local variable the Tab that we are going to use
-      // for pid tuning in Shuffleboard
-      Shuffleboard.getTab("PID Tuning").add(new PIDTuningCommand(driveTrain));
+  @SuppressWarnings("unused")
+  private void setupPidTuningCommandShuffleboard(){
+    // First, assign a local variable the Tab that we are going to use
+    // for pid tuning in Shuffleboard
+    Shuffleboard.getTab("PID Tuning").add(new PIDTuningCommand(driveTrain));
 
-    }
+  }
 
   /*  Sample for mechanism
 

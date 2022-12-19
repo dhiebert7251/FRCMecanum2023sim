@@ -6,19 +6,20 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.networktables.NetworkTableEntry;
+//import edu.wpi.first.networktables.NetworkTableEntry;
+//import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.ShuffleboardInfo;
+//import frc.robot.ShuffleboardInfo;
 
 public class Drive extends CommandBase {
   private final Drivetrain driveTrain;
   private DoubleSupplier throttle;
   private DoubleSupplier slide;
   private DoubleSupplier rotation;
-  private boolean useFOD;
+  //private boolean useFOD;
 
-
+/*
   public Drive(Drivetrain driveTrain, DoubleSupplier throttle, 
       DoubleSupplier slide, DoubleSupplier rotation, 
       boolean useFOD) {
@@ -29,6 +30,16 @@ public class Drive extends CommandBase {
     this.useFOD = useFOD;
     addRequirements(this.driveTrain);
   }
+
+*/
+  public Drive(Drivetrain driveTrain, DoubleSupplier throttle,
+        DoubleSupplier slide, DoubleSupplier rotation) {
+          this.driveTrain = driveTrain;
+          this.throttle = throttle;
+          this.slide = slide;
+          this.rotation = rotation;
+
+        }
 
   // Called when the command is initially scheduled.
   @Override
@@ -44,15 +55,15 @@ public class Drive extends CommandBase {
     driveTrain.driveWithJoysticks(
         -throttle.getAsDouble(),
         slide.getAsDouble(),
-        rotation.getAsDouble(),
-        useFOD);
+        rotation.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
         //set joystick inputs to 0 for safety
-        driveTrain.driveWithJoysticks(0.0, 0.0, 0.0, true);
+       // driveTrain.driveWithJoysticks(0.0, 0.0, 0.0, true);
+        driveTrain.driveWithJoysticks(0.0, 0.0, 0.0);
   }
 
   // Returns true when the command should end.
